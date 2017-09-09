@@ -23,5 +23,11 @@ namespace Carcassonne.Classes
             CardImage.UriSource = new Uri("D:/User_Data/Desktop/ExampleSegmentations/Card.png");
             CardImage.EndInit();
         }
+
+        public override string ToString()
+        {
+            return "Card1";
+        }
+
     }
 }

@@ -27,15 +27,5 @@ namespace Carcassonne
             InitializeComponent();
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            Card1 card1 = new Card1();
-            Card2VisibleConverter converter = new Card2VisibleConverter();
-            Image image = (Image)converter.Convert(card1, null, null, null);
-
-            image.Margin = new Thickness(0.0, 10.0, 12.0, 13.0);
-
-            MainCanvas.Children.Add(image);
-        }
     }
 }
