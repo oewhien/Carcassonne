@@ -7,20 +7,19 @@ using System.Windows;
 using Carcassonne.Classes;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using Carcassonne.Classes.Helper;
+using System.Windows.Input;
 
 namespace Carcassonne.ViewModel
 {
 
-    public class RectItem
-    {
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double Width { get; set; }
-        public double Height { get; set; }
-    }
 
     public class ViewModel : DependencyObject, INotifyPropertyChanged
     {
+
+        public ICommand RotateCurrentCardLeftCommand { get; set; }
+        public ICommand RotateCurrentCardRightCommand { get; set; }
+        private CardDeck _myCardDeck;
 
         public string WindowTitle { get; } = "Carcassone";
 
@@ -30,15 +29,15 @@ namespace Carcassonne.ViewModel
         public CardRotation RotState
         {
             get { return _rotState; }
-            set {
-
-                
+            set {                
                 _rotState = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("RotState"));
                 CurrentCard.RotationState = value;
 
             }
         }
+        
+
         
 
         public ObservableCollection<CardRotation> RotationItems
@@ -74,31 +73,54 @@ namespace Carcassonne.ViewModel
 
         public ViewModel()
         {
-            CurrentCard = new Card1();
+            RotateCurrentCardLeftCommand = new RelayCommand(RotateCurrentCardLeft, CanRotatCurrent);
+            RotateCurrentCardRightCommand = new RelayCommand(RotateCurrentCardRight, CanRotatCurrent);
 
-            CardBase card0 = new Card1()
-            {
-                GridPosRow = 0,
-                GridPosCol = 0,
+            _myCardDeck = new CardDeck();
 
-            };
+            CurrentCard = _myCardDeck.DrawCard();
 
-            CardBase card1 = new Card1()
-            {
-                GridPosRow = 100,
-                GridPosCol = 100,
-                RotationState = CardRotation.Deg270
-            };
+            CardBase card1 = _myCardDeck.DrawCard();
+            card1.GridPosRow = 0;
+            card1.GridPosCol = 100;
+            CardBase card2 = _myCardDeck.DrawCard();
+            card2.GridPosRow = 0;
+            card2.GridPosCol = 200;
+            CardBase card3 = _myCardDeck.DrawCard();
+            card3.GridPosRow = 100;
+            card3.GridPosCol = 200;
 
-
-            CardsOnBoard = new ObservableCollection<CardBase>() { card0, card1 };
-
+            CardsOnBoard = new ObservableCollection<CardBase>() { card1, card2, card3 };
+            CardsOnBoard.CollectionChanged += CardsOnBoard_CollectionChanged;
         }
 
+        private void CardsOnBoard_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems != null)
+            {
+                CurrentCard = _myCardDeck.DrawCard();
+                CurrentCard.GridPosCol = 0;
+                CurrentCard.GridPosRow = 0;
+                CurrentCard.RotationState = CardRotation.Deg0;                
+            }
+        }
 
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
         {
             PropertyChanged?.Invoke(this, e);
+        }
+
+        private void RotateCurrentCardLeft(object param)
+        {
+            CurrentCard.RotateCardLeft();
+        }
+        private void RotateCurrentCardRight(object param)
+        {
+            CurrentCard.RotateCardRight();
+        }
+        private bool CanRotatCurrent(object param)
+        {
+            return true;
         }
        
     }

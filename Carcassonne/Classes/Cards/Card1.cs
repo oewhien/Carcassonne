@@ -11,16 +11,16 @@ namespace Carcassonne.Classes
     {
         public Card1()
         {
-            _edgeNorth = new CardEdge { HasCity = false, HasStreet = true, HasMeadow = true };
-            _edgeEast = new CardEdge { HasCity = false, HasStreet = false, HasMeadow = true };
-            _edgeSouth = new CardEdge { HasCity = false, HasStreet = false, HasMeadow = true };
+            _edgeNorth = new CardEdge { HasCity = true, HasStreet = false, HasMeadow = false };
+            _edgeEast = new CardEdge { HasCity = false, HasStreet = true, HasMeadow = true };
+            _edgeSouth = new CardEdge { HasCity = true, HasStreet = false, HasMeadow = false };
             _edgeWest = new CardEdge { HasCity = true, HasStreet = false, HasMeadow = false };
 
 
             CardImage = new BitmapImage();
 
             CardImage.BeginInit();
-            CardImage.UriSource = new Uri("D:/User_Data/Desktop/ExampleSegmentations/Card.png");
+            CardImage.UriSource = new Uri(@"D:\User_Data\Documents\Visual Studio 2015\Projects\Carcassonne\Images\Card1.jpg");
             CardImage.EndInit();
         }
 

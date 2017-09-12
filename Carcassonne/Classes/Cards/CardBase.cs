@@ -100,6 +100,18 @@ namespace Carcassonne.Classes
 
         }
 
+        public void RotateCardLeft()
+        {            
+            RotationState = (CardRotation) (((int) RotationState - 1) % 4); 
+        }
+
+        public void RotateCardRight()
+        {
+            RotationState = (CardRotation)(((int)RotationState + 1) % 4);
+        }
+
+
+
     }
 
     public enum CardRotation

@@ -27,5 +27,38 @@ namespace Carcassonne
             InitializeComponent();
         }
 
+        private void ItemsControl_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Handled == false)
+            {
+                //Panel _panel = sender as Panel;
+                //if (_panel == null)
+                //    return;
+                CardBase _card = e.Data.GetData("Object") as CardBase;
+                if (_card == null)
+                    return;
+                
+                Point mousePos = e.GetPosition(boardItemControl);
+
+                _card.GridPosRow = (int)mousePos.Y;
+                _card.GridPosCol = (int)mousePos.X;
+
+                viewModel.CardsOnBoard.Add(_card);
+                // Todo: add effects etc.
+            }
+        }
+
+        private void Image_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DataObject data = new DataObject();
+                data.SetData("Object", viewModel.CurrentCard);
+
+                DragDrop.DoDragDrop(this, data, DragDropEffects.Copy | DragDropEffects.Move);
+            }
+
+            
+        }
     }
 }

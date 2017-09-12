@@ -6,10 +6,11 @@
         xmlns:local="clr-namespace:Carcassonne"
         xmlns:vm="clr-namespace:Carcassonne.ViewModel"
         xmlns:conv="clr-namespace:Carcassonne.Converter"
+        xmlns:cal="http://www.caliburnproject.org"
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" Height="800" Width="1200">
     <Window.DataContext>
-        <vm:ViewModel/>
+        <vm:ViewModel x:Name="viewModel"/>
     </Window.DataContext>
     <Window.Resources>
         <conv:Rotation2StringConverter x:Key="rotationConverter"/>
@@ -17,9 +18,10 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="59*"/>
+            <RowDefinition Height="497*"/>
+            <RowDefinition Height="95*"/>
+            <RowDefinition Height="118*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -27,7 +29,14 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <ItemsControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding CardsOnBoard}">
+        <ItemsControl Grid.Row="1" 
+                      Grid.Column="1" 
+                      ItemsSource="{Binding CardsOnBoard}"
+                      AllowDrop="True"
+                      Drop ="ItemsControl_Drop"
+                      x:Name="boardItemControl"
+                      Background="Wheat" Grid.RowSpan="2"
+                      >
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas/>
@@ -49,18 +58,8 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        
-        <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" >
-            <Button>Click</Button>
-            <ListBox ItemsSource="{Binding RotationItems, Mode=TwoWay}" SelectedItem="{Binding RotState, Mode=TwoWay}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <!-- <TextBlock Text="{Binding  Converter={StaticResource rotationConverter}}"/> -->
-                        <TextBlock Text="{Binding }"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <TextBox Text="{Binding RotState}"/>
+
+        <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" >
             <ListBox ItemsSource="{Binding RotationItems, Mode=TwoWay}" SelectedItem="{Binding CurrentCard.RotationState, Mode=TwoWay}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -69,11 +68,18 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Image Source="{Binding CurrentCard.CardImage}">
+            <Button Content="Links" Command="{Binding RotateCurrentCardLeftCommand}"></Button>
+            <Image Source="{Binding CurrentCard.CardImage}"
+                   MouseMove="Image_MouseMove">
                 <Image.LayoutTransform>
                     <RotateTransform Angle="{Binding CurrentCard.RotationState, Converter={StaticResource cardRot2Int}}"/>
-                </Image.LayoutTransform>    
+                </Image.LayoutTransform>
             </Image>
+            <Button Content="Rechts" Command="{Binding RotateCurrentCardRightCommand}"></Button>
         </StackPanel>
+
+
+
+
     </Grid>
 </Window>
