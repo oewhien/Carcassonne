@@ -44,6 +44,9 @@ namespace Carcassonne
                 _card.GridPosCol = (int)mousePos.X;
 
                 viewModel.CardsOnBoard.Add(_card);
+
+
+
                 // Todo: add effects etc.
             }
         }
@@ -60,5 +63,6 @@ namespace Carcassonne
 
             
         }
+
     }
 }

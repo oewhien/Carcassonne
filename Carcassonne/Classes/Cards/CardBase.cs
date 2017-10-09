@@ -33,8 +33,15 @@ namespace Carcassonne.Classes
         public int Height { get; } = 100;
         public int Width { get; } = 100;
 
+        private BitmapImage _cardImage;
 
-        public BitmapImage CardImage { get; set; }
+        public BitmapImage CardImage {
+            get { return _cardImage; }
+            set {
+                _cardImage = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("CardImage"));
+            }
+        }
 
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
         {

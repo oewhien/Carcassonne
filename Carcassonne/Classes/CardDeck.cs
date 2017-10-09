@@ -15,9 +15,9 @@ namespace Carcassonne.Classes
         public CardDeck()
         {
             List<CardBase> card0s = Enumerable.Repeat(0, 3).Select(x => (CardBase) new Card0()).ToList<CardBase>();
-            List<CardBase> card1s = Enumerable.Repeat(0, 3).Select(x => (CardBase)new Card1()).ToList<CardBase>();
-            List<CardBase> card2s = Enumerable.Repeat(0, 3).Select(x => (CardBase)new Card2()).ToList<CardBase>();
-            List<CardBase> card3s = Enumerable.Repeat(0, 3).Select(x => (CardBase)new Card3()).ToList<CardBase>();
+            List<CardBase> card1s = Enumerable.Repeat(0, 3).Select(x => (CardBase) new Card1()).ToList<CardBase>();
+            List<CardBase> card2s = Enumerable.Repeat(0, 3).Select(x => (CardBase) new Card2()).ToList<CardBase>();
+            List<CardBase> card3s = Enumerable.Repeat(0, 3).Select(x => (CardBase) new Card3()).ToList<CardBase>();
 
             CardDeckList = new List<CardBase>();
             CardDeckList.AddRange(card0s);
@@ -28,6 +28,10 @@ namespace Carcassonne.Classes
             CardDeckList.Shuffle();
         }
 
+        /// <summary>
+        /// Draw a new card from the deck.
+        /// </summary>
+        /// <returns></returns>
         public CardBase DrawCard()
         {
             int n = CardDeckList.Count;

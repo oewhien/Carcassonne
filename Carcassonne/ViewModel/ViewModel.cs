@@ -33,12 +33,8 @@ namespace Carcassonne.ViewModel
                 _rotState = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("RotState"));
                 CurrentCard.RotationState = value;
-
             }
-        }
-        
-
-        
+        }        
 
         public ObservableCollection<CardRotation> RotationItems
         {
@@ -46,28 +42,40 @@ namespace Carcassonne.ViewModel
             set {; }
         }
 
-        public string TestString
-        {
-            get { return (string)GetValue(TestStringProperty); }
-            set { SetValue(TestStringProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for TestString.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty TestStringProperty =
-            DependencyProperty.Register("TestString", typeof(string), typeof(MainWindow), new PropertyMetadata("1, 1, Test"));
-
-
-
-
+        private CardBase _currentCard;
         public CardBase CurrentCard
         {
-            get { return (CardBase)GetValue(CurrentCardProperty); }
-            set { SetValue(CurrentCardProperty, value); }
+            get
+            {
+                return _currentCard;
+            }
+
+            set
+            {
+                _currentCard = value;
+                OnPropertyChanged(new PropertyChangedEventArgs("CurrentCard"));
+            }
         }
 
-        // Using a DependencyProperty as the backing store for CurrentCard.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty CurrentCardProperty =
-            DependencyProperty.Register("CurrentCard", typeof(CardBase), typeof(MainWindow), new PropertyMetadata());
+        //public CardBase CurrentCard
+        //{
+        //    get { return (CardBase)GetValue(CurrentCardProperty); }
+        //    set { SetValue(CurrentCardProperty, value); }
+        //}
+
+        //public static FrameworkPropertyMetadata currentCardPropMeta = new FrameworkPropertyMetadata()
+        //{
+        //    AffectsRender = true
+        //};        
+
+        //// Using a DependencyProperty as the backing store for CurrentCard.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty CurrentCardProperty =
+        //    DependencyProperty.Register("CurrentCard", typeof(CardBase), typeof(MainWindow), currentCardPropMeta);
+
+        
+        
+
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -98,11 +106,16 @@ namespace Carcassonne.ViewModel
         {
             if (e.NewItems != null)
             {
-                CurrentCard = _myCardDeck.DrawCard();
-                CurrentCard.GridPosCol = 0;
-                CurrentCard.GridPosRow = 0;
-                CurrentCard.RotationState = CardRotation.Deg0;                
+                DrawNewCard();                
             }
+        }
+
+        private void DrawNewCard()
+        {            
+            CurrentCard = _myCardDeck.DrawCard();
+            CurrentCard.GridPosCol = 0;
+            CurrentCard.GridPosRow = 0;
+            CurrentCard.RotationState = CardRotation.Deg0;
         }
 
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
