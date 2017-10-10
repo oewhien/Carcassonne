@@ -62,6 +62,7 @@
     <Compile Include="Classes\Cards\Card2.cs" />
     <Compile Include="Classes\Cards\Card3.cs" />
     <Compile Include="Classes\Cards\CardNull.cs" />
+    <Compile Include="Classes\Helper\IntPoint.cs" />
     <Compile Include="Classes\Helper\RelayCommand.cs" />
     <Compile Include="Converter\CardRotation2IntConverter.cs" />
     <Compile Include="Converter\CardRotation2ItemSourceConverter.cs" />

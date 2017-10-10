@@ -40,13 +40,10 @@ namespace Carcassonne
                 
                 Point mousePos = e.GetPosition(boardItemControl);
 
-                _card.GridPosRow = (int)mousePos.Y;
-                _card.GridPosCol = (int)mousePos.X;
+                _card.GridPosRow = (int) mousePos.Y;
+                _card.GridPosCol = (int) mousePos.X;
 
-                viewModel.CardsOnBoard.Add(_card);
-
-
-
+                viewModel.AddCardToBoard(_card);
                 // Todo: add effects etc.
             }
         }

@@ -38,7 +38,6 @@ namespace Carcassonne.Converter
                 image.Width = 100;
                 image.Height = 100;
 
-
             }           
 
             return image;

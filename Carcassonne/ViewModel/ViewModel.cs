@@ -16,14 +16,22 @@ namespace Carcassonne.ViewModel
 
     public class ViewModel : DependencyObject, INotifyPropertyChanged
     {
+        private const int numBoardPositionsRow = 100;
+        private const int numBoardPositionsCol = 120;
+
+        private int _centerRow = numBoardPositionsRow / 2;
+        private int _centerCol = numBoardPositionsCol / 2;
+
+        private bool[,] _occupiedBoardPositions = new bool[numBoardPositionsRow, numBoardPositionsRow];
 
         public ICommand RotateCurrentCardLeftCommand { get; set; }
         public ICommand RotateCurrentCardRightCommand { get; set; }
         private CardDeck _myCardDeck;
 
         public string WindowTitle { get; } = "Carcassone";
-
-        public ObservableCollection<CardBase> CardsOnBoard { get; set; }
+               
+        
+        public ObservableCollection<CardBase> CardsOnBoard { get; }
 
         private CardRotation _rotState;
         public CardRotation RotState
@@ -57,23 +65,12 @@ namespace Carcassonne.ViewModel
             }
         }
 
-        //public CardBase CurrentCard
-        //{
-        //    get { return (CardBase)GetValue(CurrentCardProperty); }
-        //    set { SetValue(CurrentCardProperty, value); }
-        //}
-
-        //public static FrameworkPropertyMetadata currentCardPropMeta = new FrameworkPropertyMetadata()
-        //{
-        //    AffectsRender = true
-        //};        
-
-        //// Using a DependencyProperty as the backing store for CurrentCard.  This enables animation, styling, binding, etc...
-        //public static readonly DependencyProperty CurrentCardProperty =
-        //    DependencyProperty.Register("CurrentCard", typeof(CardBase), typeof(MainWindow), currentCardPropMeta);
-
-        
-        
+        public void AddCardToBoard(CardBase card)
+        {
+            CardsOnBoard.Add(card);
+            
+            
+        }
 
 
 
@@ -88,18 +85,25 @@ namespace Carcassonne.ViewModel
 
             CurrentCard = _myCardDeck.DrawCard();
 
-            CardBase card1 = _myCardDeck.DrawCard();
-            card1.GridPosRow = 0;
-            card1.GridPosCol = 100;
-            CardBase card2 = _myCardDeck.DrawCard();
-            card2.GridPosRow = 0;
-            card2.GridPosCol = 200;
-            CardBase card3 = _myCardDeck.DrawCard();
-            card3.GridPosRow = 100;
-            card3.GridPosCol = 200;
+            CardBase card0 = _myCardDeck.DrawCard();
+            card0.GridPosRow = 100;
+            card0.GridPosCol = 100;
 
-            CardsOnBoard = new ObservableCollection<CardBase>() { card1, card2, card3 };
+            CardBase card1 = _myCardDeck.DrawCard();
+            card1.GridPosRow = 100;
+            card1.GridPosCol = 0;
+            CardBase card2 = _myCardDeck.DrawCard();
+            card2.GridPosRow = 200;
+            card2.GridPosCol = 200;
+
+
+            CardsOnBoard = new ObservableCollection<CardBase>() {};
             CardsOnBoard.CollectionChanged += CardsOnBoard_CollectionChanged;
+
+            AddCardToBoard(card0);
+            AddCardToBoard(card1);
+            AddCardToBoard(card2);
+
         }
 
         private void CardsOnBoard_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -113,8 +117,8 @@ namespace Carcassonne.ViewModel
         private void DrawNewCard()
         {            
             CurrentCard = _myCardDeck.DrawCard();
-            CurrentCard.GridPosCol = 0;
             CurrentCard.GridPosRow = 0;
+            CurrentCard.GridPosCol = 0;
             CurrentCard.RotationState = CardRotation.Deg0;
         }
 

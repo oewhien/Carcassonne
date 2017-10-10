@@ -28,8 +28,10 @@ namespace Carcassonne.Classes
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public int GridPosRow { get; set; }
-        public int GridPosCol { get; set; }
+        private int _gridPosRow;
+        private int _gridPosCol;
+
+       
         public int Height { get; } = 100;
         public int Width { get; } = 100;
 
@@ -61,6 +63,32 @@ namespace Carcassonne.Classes
                 _rotationState = value;
                 OnPropertyChanged(new PropertyChangedEventArgs("RotationState"));
                 
+            }
+        }
+
+        public int GridPosRow
+        {
+            get
+            {
+                return _gridPosRow;
+            }
+
+            set
+            {
+                _gridPosRow = (int) Math.Round((value - Height/2) * 0.01)*100;
+            }
+        }
+
+        public int GridPosCol
+        {
+            get
+            {
+                return _gridPosCol;
+            }
+
+            set
+            {
+                _gridPosCol = (int) Math.Round((value - Width/2) * 0.01)*100;
             }
         }
 
