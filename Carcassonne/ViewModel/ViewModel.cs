@@ -26,6 +26,38 @@ namespace Carcassonne.ViewModel
 
         public ICommand RotateCurrentCardLeftCommand { get; set; }
         public ICommand RotateCurrentCardRightCommand { get; set; }
+        public ICommand MoveBoardLeft { get; set; }
+        public ICommand MoveBoardRight { get; set; }
+        public ICommand MoveBoardUp { get; set; }
+        public ICommand MoveBoardDown { get; set; }
+        
+        public double OffsetBoardX
+        {
+            get { return (double)GetValue(OffsetBoardXProperty); }
+            set { SetValue(OffsetBoardXProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for OffsetBoardX.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty OffsetBoardXProperty =
+            DependencyProperty.Register("OffsetBoardX", typeof(double), typeof(ViewModel), new PropertyMetadata(0.0));
+
+
+
+        public double OffsetBoardY
+        {
+            get { return (double)GetValue(OffsetBoardYProperty); }
+            set { SetValue(OffsetBoardYProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for OffsetBoardY.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty OffsetBoardYProperty =
+            DependencyProperty.Register("OffsetBoardY", typeof(double), typeof(ViewModel), new PropertyMetadata(0.0));
+
+
+
+
+        private double _offsetIncrement = 10;
+
         private CardDeck _myCardDeck;
 
         public string WindowTitle { get; } = "Carcassone";
@@ -80,7 +112,12 @@ namespace Carcassonne.ViewModel
         {
             RotateCurrentCardLeftCommand = new RelayCommand(RotateCurrentCardLeft, CanRotatCurrent);
             RotateCurrentCardRightCommand = new RelayCommand(RotateCurrentCardRight, CanRotatCurrent);
+            MoveBoardLeft = new RelayCommand(MoveBoardLeftAction);
+            MoveBoardRight = new RelayCommand(MoveBoardRightAction);
+            MoveBoardUp = new RelayCommand(MoveBoardUpAction);
+            MoveBoardDown = new RelayCommand(MoveBoardDownAction);
 
+           
             _myCardDeck = new CardDeck();
 
             CurrentCard = _myCardDeck.DrawCard();
@@ -104,6 +141,40 @@ namespace Carcassonne.ViewModel
             AddCardToBoard(card1);
             AddCardToBoard(card2);
 
+        }
+
+        private void MoveBoardLeftAction(object param)
+        {
+            OffsetBoardX -= _offsetIncrement;
+            
+            UpDateCardPositions();
+        }
+        private void MoveBoardRightAction(object param)
+        {
+            OffsetBoardX += _offsetIncrement;
+            
+            UpDateCardPositions();
+        }
+        private void MoveBoardUpAction(object param)
+        {
+            OffsetBoardY -= _offsetIncrement;
+            
+            UpDateCardPositions();
+        }
+        private void MoveBoardDownAction(object param)
+        {
+            OffsetBoardY += _offsetIncrement;
+            
+            UpDateCardPositions();
+        }
+
+        private void UpDateCardPositions()
+        {
+            foreach (CardBase card in CardsOnBoard)
+            {
+                card.PosOffsetX = OffsetBoardX;
+                card.PosOffsetY = OffsetBoardY;
+            }
         }
 
         private void CardsOnBoard_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

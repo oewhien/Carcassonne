@@ -18,24 +18,27 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="59*"/>
+            <RowDefinition Height="29*"/>
             <RowDefinition Height="497*"/>
-            <RowDefinition Height="95*"/>
+            <RowDefinition Height="29*"/>
             <RowDefinition Height="118*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="0.3*"/>
             <ColumnDefinition Width="10*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="0.3*"/>
         </Grid.ColumnDefinitions>
-
+        <Button Grid.Row="0" Grid.Column="1" Content="U" Command="{Binding MoveBoardUp}"/>
+        <Button Grid.Row="1" Grid.Column="0" Content="L" Command="{Binding MoveBoardLeft}"/>
+        <Button Grid.Row="1" Grid.Column="2" Content="R" Command="{Binding MoveBoardRight}"/>
+        <Button Grid.Row="2" Grid.Column="1" Content="D" Command="{Binding MoveBoardDown}"/>
         <ItemsControl Grid.Row="1" 
                       Grid.Column="1" 
                       ItemsSource="{Binding CardsOnBoard}"
                       AllowDrop="True"
                       Drop ="ItemsControl_Drop"
                       x:Name="boardItemControl"
-                      Background="Wheat" Grid.RowSpan="2"
+                      Background="Wheat" Grid.RowSpan="1"
                       >
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -76,10 +79,13 @@
                 </Image.LayoutTransform>
             </Image>
             <Button Content="Rechts" Command="{Binding RotateCurrentCardRightCommand}"></Button>
+            <TextBox Text="{Binding OffsetBoardX}"/>
         </StackPanel>
 
 
-
+        <Canvas Grid.Row="1" Grid.Column="1">
+            <Ellipse Canvas.Left="{Binding OffsetBoardX}" Canvas.Top="{Binding OffsetBoardY}" Fill="Aqua" Width="50" Height="50"/>
+        </Canvas>
 
     </Grid>
 </Window>

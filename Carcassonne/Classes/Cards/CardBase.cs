@@ -11,16 +11,9 @@ using System.ComponentModel;
 namespace Carcassonne.Classes
 {
     public class CardBase : DependencyObject, INotifyPropertyChanged
-    {
-        //public CardRotation RotationState { get; set; }
-
+    {        
         private CardRotation _rotationState;
-
-        
-
-      
-        public string Test { get; set; } = "test";
-        
+                        
         public CardEdge _edgeNorth;
         public CardEdge _edgeEast;
         public CardEdge _edgeSouth;
@@ -31,7 +24,9 @@ namespace Carcassonne.Classes
         private int _gridPosRow;
         private int _gridPosCol;
 
-       
+        public double PosOffsetX;
+        public double PosOffsetY;
+
         public int Height { get; } = 100;
         public int Width { get; } = 100;
 
@@ -75,7 +70,8 @@ namespace Carcassonne.Classes
 
             set
             {
-                _gridPosRow = (int) Math.Round((value - Height/2) * 0.01)*100;
+                _gridPosRow = (int) Math.Round((value - Height/2) * 0.01)*100 + (int) PosOffsetY;
+                OnPropertyChanged(new PropertyChangedEventArgs("GridPosRow"));
             }
         }
 
@@ -88,14 +84,14 @@ namespace Carcassonne.Classes
 
             set
             {
-                _gridPosCol = (int) Math.Round((value - Width/2) * 0.01)*100;
+                _gridPosCol = (int) Math.Round((value - Width/2) * 0.01)*100 + (int) PosOffsetX;
+                OnPropertyChanged(new PropertyChangedEventArgs("GridPosCol"));
             }
         }
 
         public CardBase()
         {
-            RotationState = CardRotation.Deg0;
-            Test = "Tete";
+            RotationState = CardRotation.Deg0;            
             GridPosRow = -1;
             GridPosCol = -1;        
         }
