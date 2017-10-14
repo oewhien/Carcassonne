@@ -24,8 +24,10 @@ namespace Carcassonne.Classes
         private int _gridPosRow;
         private int _gridPosCol;
 
-        public double PosOffsetX;
-        public double PosOffsetY;
+        private double _posOffsetX;
+        private double _posOffsetY;
+
+       
 
         public int Height { get; } = 100;
         public int Width { get; } = 100;
@@ -86,6 +88,35 @@ namespace Carcassonne.Classes
             {
                 _gridPosCol = (int) Math.Round((value - Width/2) * 0.01)*100 + (int) PosOffsetX;
                 OnPropertyChanged(new PropertyChangedEventArgs("GridPosCol"));
+            }
+        }
+
+        public double PosOffsetX
+        {
+            get
+            {
+                return _posOffsetX;
+            }
+
+            set
+            {
+                _posOffsetX = value;
+                GridPosCol = GridPosCol;    // Hack to do the update.
+            }
+        }
+
+        public double PosOffsetY
+        {
+            get
+            {
+                return _posOffsetY;
+            }
+
+            set
+            {
+                _posOffsetY = value;
+                GridPosRow = GridPosRow;
+                
             }
         }
 

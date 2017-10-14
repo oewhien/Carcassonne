@@ -27,11 +27,11 @@
             <ColumnDefinition Width="0.3*"/>
             <ColumnDefinition Width="10*"/>
             <ColumnDefinition Width="0.3*"/>
-        </Grid.ColumnDefinitions>
-        <Button Grid.Row="0" Grid.Column="1" Content="U" Command="{Binding MoveBoardUp}"/>
-        <Button Grid.Row="1" Grid.Column="0" Content="L" Command="{Binding MoveBoardLeft}"/>
-        <Button Grid.Row="1" Grid.Column="2" Content="R" Command="{Binding MoveBoardRight}"/>
-        <Button Grid.Row="2" Grid.Column="1" Content="D" Command="{Binding MoveBoardDown}"/>
+        </Grid.ColumnDefinitions>        
+        <RepeatButton Grid.Row="0" Grid.Column="1" Content="U" Command="{Binding MoveBoardUp}"/>
+        <RepeatButton Grid.Row="1" Grid.Column="0" Content="L" Command="{Binding MoveBoardLeft}"/>
+        <RepeatButton Grid.Row="1" Grid.Column="2" Content="R" Command="{Binding MoveBoardRight}"/>
+        <RepeatButton Grid.Row="2" Grid.Column="1" Content="D" Command="{Binding MoveBoardDown}"/>
         <ItemsControl Grid.Row="1" 
                       Grid.Column="1" 
                       ItemsSource="{Binding CardsOnBoard}"
