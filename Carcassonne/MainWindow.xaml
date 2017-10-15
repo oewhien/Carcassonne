@@ -27,40 +27,40 @@
             <ColumnDefinition Width="0.3*"/>
             <ColumnDefinition Width="10*"/>
             <ColumnDefinition Width="0.3*"/>
-        </Grid.ColumnDefinitions>        
-        <RepeatButton Grid.Row="0" Grid.Column="1" Content="U" Command="{Binding MoveBoardUp}"/>
-        <RepeatButton Grid.Row="1" Grid.Column="0" Content="L" Command="{Binding MoveBoardLeft}"/>
-        <RepeatButton Grid.Row="1" Grid.Column="2" Content="R" Command="{Binding MoveBoardRight}"/>
-        <RepeatButton Grid.Row="2" Grid.Column="1" Content="D" Command="{Binding MoveBoardDown}"/>
-        <ItemsControl Grid.Row="1" 
-                      Grid.Column="1" 
+        </Grid.ColumnDefinitions>                
+        <ScrollViewer Grid.Row="1" 
+                      Grid.Column="1" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible">
+            <ItemsControl 
                       ItemsSource="{Binding CardsOnBoard}"
                       AllowDrop="True"
                       Drop ="ItemsControl_Drop"
                       x:Name="boardItemControl"
                       Background="Wheat" Grid.RowSpan="1"
+                Width="2000" Height="2000"
                       >
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemContainerStyle>
-                <Style TargetType="ContentPresenter">
-                    <Setter Property="Canvas.Left" Value="{Binding GridPosCol}"/>
-                    <Setter Property="Canvas.Top" Value="{Binding GridPosRow}"/>
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Image Width="{Binding Width}" Height="{Binding Height}" Source="{Binding CardImage}">
-                        <Image.LayoutTransform>
-                            <RotateTransform Angle="{Binding RotationState, Converter={StaticResource cardRot2Int}}"></RotateTransform>
-                        </Image.LayoutTransform>
-                    </Image>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="Canvas.Left" Value="{Binding Position.X}"/>
+                        <Setter Property="Canvas.Top" Value="{Binding Position.Y}"/>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Image Width="{Binding Width}" Height="{Binding Height}" Source="{Binding CardImage}">
+                            <Image.LayoutTransform>
+                                <RotateTransform Angle="{Binding RotationState, Converter={StaticResource cardRot2Int}}"></RotateTransform>
+                            </Image.LayoutTransform>
+                        </Image>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
 
         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" >
             <ListBox ItemsSource="{Binding RotationItems, Mode=TwoWay}" SelectedItem="{Binding CurrentCard.RotationState, Mode=TwoWay}">
@@ -79,13 +79,8 @@
                 </Image.LayoutTransform>
             </Image>
             <Button Content="Rechts" Command="{Binding RotateCurrentCardRightCommand}"></Button>
-            <TextBox Text="{Binding OffsetBoardX}"/>
+            
         </StackPanel>
-
-
-        <Canvas Grid.Row="1" Grid.Column="1">
-            <Ellipse Canvas.Left="{Binding OffsetBoardX}" Canvas.Top="{Binding OffsetBoardY}" Fill="Aqua" Width="50" Height="50"/>
-        </Canvas>
 
     </Grid>
 </Window>

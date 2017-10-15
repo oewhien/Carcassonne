@@ -40,8 +40,8 @@ namespace Carcassonne
                 
                 Point mousePos = e.GetPosition(boardItemControl);
 
-                _card.GridPosRow = (int) (mousePos.Y + viewModel.OffsetBoardY);
-                _card.GridPosCol = (int) (mousePos.X + viewModel.OffsetBoardX);
+                _card.Position.X = Math.Round((mousePos.X - _card.Width/2)/_card.Width)*_card.Width;
+                _card.Position.Y = Math.Round((mousePos.Y - _card.Height/2)/_card.Height)*_card.Height;
 
                 viewModel.AddCardToBoard(_card);
                 // Todo: add effects etc.
@@ -60,6 +60,9 @@ namespace Carcassonne
 
             
         }
+
+
+
 
     }
 }

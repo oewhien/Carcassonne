@@ -7,6 +7,7 @@ using System.Windows.Media.Imaging;
 using System.Reflection;
 using System.Windows;
 using System.ComponentModel;
+using Carcassonne.Classes.Helper;
 
 namespace Carcassonne.Classes
 {
@@ -21,13 +22,22 @@ namespace Carcassonne.Classes
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private int _gridPosRow;
-        private int _gridPosCol;
 
-        private double _posOffsetX;
-        private double _posOffsetY;
 
-       
+        public BindPoint Position
+        {
+            get { return (BindPoint)GetValue(PositionProperty); }
+            set { SetValue(PositionProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Position.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PositionProperty =
+            DependencyProperty.Register("Position", typeof(BindPoint), typeof(Window), new PropertyMetadata());
+
+
+
+
+        public IntPoint GridPosition;
 
         public int Height { get; } = 100;
         public int Width { get; } = 100;
@@ -63,68 +73,14 @@ namespace Carcassonne.Classes
             }
         }
 
-        public int GridPosRow
-        {
-            get
-            {
-                return _gridPosRow;
-            }
-
-            set
-            {
-                _gridPosRow = (int) Math.Round((value - Height/2) * 0.01)*100 + (int) PosOffsetY;
-                OnPropertyChanged(new PropertyChangedEventArgs("GridPosRow"));
-            }
-        }
-
-        public int GridPosCol
-        {
-            get
-            {
-                return _gridPosCol;
-            }
-
-            set
-            {
-                _gridPosCol = (int) Math.Round((value - Width/2) * 0.01)*100 + (int) PosOffsetX;
-                OnPropertyChanged(new PropertyChangedEventArgs("GridPosCol"));
-            }
-        }
-
-        public double PosOffsetX
-        {
-            get
-            {
-                return _posOffsetX;
-            }
-
-            set
-            {
-                _posOffsetX = value;
-                GridPosCol = GridPosCol;    // Hack to do the update.
-            }
-        }
-
-        public double PosOffsetY
-        {
-            get
-            {
-                return _posOffsetY;
-            }
-
-            set
-            {
-                _posOffsetY = value;
-                GridPosRow = GridPosRow;
-                
-            }
-        }
+      
 
         public CardBase()
         {
-            RotationState = CardRotation.Deg0;            
-            GridPosRow = -1;
-            GridPosCol = -1;        
+            RotationState = CardRotation.Deg0;
+            GridPosition = new IntPoint(-1, -1);
+            Position = new BindPoint();
+                 
         }
 
         public int RotAngle()
