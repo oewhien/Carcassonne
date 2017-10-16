@@ -11,12 +11,12 @@ using Carcassonne.Classes.Helper;
 namespace Carcassonne.Converter
 {
     [ValueConversion(typeof(Point),typeof(IntPoint))]    
-    class CardPosition2CardGridConverter : IValueConverter
+    public class CardPosition2CardGridConverter : IValueConverter
     {
-        object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value.GetType() != typeof(Point))
-                throw new InvalidCastException("Input is not valid Point.");
+            if (value.GetType() != typeof(BindPoint))
+                throw new InvalidCastException("Input is not valid BindPoint.");
 
             if (parameter == null)
                 parameter = 1;
@@ -25,7 +25,7 @@ namespace Carcassonne.Converter
 
             int size = (int) parameter;
 
-            Point point = (Point) value;
+            BindPoint point = (BindPoint) value;
             int x = (int) point.X / size;
             int y = (int) point.Y / size; 
 
@@ -34,7 +34,7 @@ namespace Carcassonne.Converter
             return intPoint;
         }
 
-        object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value.GetType() != typeof(IntPoint))
                 throw new InvalidCastException("Input is not a valid IntPoint.");
@@ -50,7 +50,7 @@ namespace Carcassonne.Converter
             double x = intPoint.X * size;
             double y = intPoint.Y * size;
 
-            Point point = new Point(x, y);
+            BindPoint point = new BindPoint(x, y);
 
             return point;
             

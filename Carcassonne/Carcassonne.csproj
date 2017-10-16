@@ -63,6 +63,7 @@
     <Compile Include="Classes\Cards\Card3.cs" />
     <Compile Include="Classes\Cards\CardNull.cs" />
     <Compile Include="Classes\Helper\BindPoint.cs" />
+    <Compile Include="Classes\Helper\CardGrid.cs" />
     <Compile Include="Classes\Helper\IntPoint.cs" />
     <Compile Include="Classes\Helper\RelayCommand.cs" />
     <Compile Include="Converter\CardPosition2CardGridConverter.cs" />

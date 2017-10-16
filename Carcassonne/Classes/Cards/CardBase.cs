@@ -8,13 +8,14 @@ using System.Reflection;
 using System.Windows;
 using System.ComponentModel;
 using Carcassonne.Classes.Helper;
+using Carcassonne.Converter;
 
 namespace Carcassonne.Classes
 {
     public class CardBase : DependencyObject, INotifyPropertyChanged
-    {        
+    {
         private CardRotation _rotationState;
-                        
+
         public CardEdge _edgeNorth;
         public CardEdge _edgeEast;
         public CardEdge _edgeSouth;
@@ -22,7 +23,7 @@ namespace Carcassonne.Classes
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-
+        public CardPosition2CardGridConverter Pos2GridConv { get; }
 
         public BindPoint Position
         {
@@ -30,12 +31,25 @@ namespace Carcassonne.Classes
             set { SetValue(PositionProperty, value); }
         }
 
+        private static readonly PropertyMetadata posMeta = new PropertyMetadata()
+        {
+            PropertyChangedCallback = OnPosChanged
+        };
+
         // Using a DependencyProperty as the backing store for Position.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PositionProperty =
-            DependencyProperty.Register("Position", typeof(BindPoint), typeof(Window), new PropertyMetadata());
+            DependencyProperty.Register("Position", typeof(BindPoint), typeof(CardBase), posMeta);
 
 
-
+        private static void OnPosChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+        {
+            CardBase card = sender as CardBase;
+            if (card != null)
+            {                
+                IntPoint intP = (IntPoint) card.Pos2GridConv.Convert(args.NewValue, null, card.Width, null);
+                card.GridPosition = intP;
+            }
+        }
 
         public IntPoint GridPosition;
 
@@ -77,6 +91,7 @@ namespace Carcassonne.Classes
 
         public CardBase()
         {
+            Pos2GridConv = new CardPosition2CardGridConverter();
             RotationState = CardRotation.Deg0;
             GridPosition = new IntPoint(-1, -1);
             Position = new BindPoint();
@@ -96,7 +111,7 @@ namespace Carcassonne.Classes
         }
 
         public void RotateCard(CardRotation cardRotation)
-        {
+        {           
             CardEdge[] currentCardEdges = new CardEdge[] { _edgeNorth, _edgeEast, _edgeSouth, _edgeWest };
             CardEdge[] newCardEdges = new CardEdge[4];
 

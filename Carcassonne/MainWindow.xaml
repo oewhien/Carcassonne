@@ -33,7 +33,7 @@
             <ItemsControl 
                       ItemsSource="{Binding CardsOnBoard}"
                       AllowDrop="True"
-                      Drop ="ItemsControl_Drop"
+                      Drop ="ItemsControl_Drop"                      
                       x:Name="boardItemControl"
                       Background="Wheat" Grid.RowSpan="1"
                 Width="2000" Height="2000"
@@ -47,6 +47,7 @@
                     <Style TargetType="ContentPresenter">
                         <Setter Property="Canvas.Left" Value="{Binding Position.X}"/>
                         <Setter Property="Canvas.Top" Value="{Binding Position.Y}"/>
+                        <Setter Property="AllowDrop" Value="False"/>
                     </Style>
                 </ItemsControl.ItemContainerStyle>
                 <ItemsControl.ItemTemplate>

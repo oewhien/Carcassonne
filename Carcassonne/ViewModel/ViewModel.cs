@@ -9,6 +9,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Carcassonne.Classes.Helper;
 using System.Windows.Input;
+using System.Runtime.CompilerServices;
+using Carcassonne.Converter;
 
 namespace Carcassonne.ViewModel
 {
@@ -22,15 +24,17 @@ namespace Carcassonne.ViewModel
         private int _centerRow = numBoardPositionsRow / 2;
         private int _centerCol = numBoardPositionsCol / 2;
 
+       
+
         private bool[,] _occupiedBoardPositions = new bool[numBoardPositionsRow, numBoardPositionsRow];
 
         public ICommand RotateCurrentCardLeftCommand { get; set; }
         public ICommand RotateCurrentCardRightCommand { get; set; }
 
-        
-        private double _offsetIncrement = 10;
+        private CardPosition2CardGridConverter pos2GridConv = new CardPosition2CardGridConverter();
 
         private CardDeck _myCardDeck;
+        public CardGrid MyCardGrid;
 
         public string WindowTitle { get; } = "Carcassone";
                
@@ -43,7 +47,7 @@ namespace Carcassonne.ViewModel
             get { return _rotState; }
             set {                
                 _rotState = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("RotState"));
+                OnPropertyChanged();
                 CurrentCard.RotationState = value;
             }
         }        
@@ -65,15 +69,13 @@ namespace Carcassonne.ViewModel
             set
             {
                 _currentCard = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("CurrentCard"));
+                OnPropertyChanged();
             }
         }
 
         public void AddCardToBoard(CardBase card)
         {
-            CardsOnBoard.Add(card);
-            
-            
+            CardsOnBoard.Add(card);                     
         }
 
 
@@ -84,31 +86,36 @@ namespace Carcassonne.ViewModel
         {
             RotateCurrentCardLeftCommand = new RelayCommand(RotateCurrentCardLeft, CanRotatCurrent);
             RotateCurrentCardRightCommand = new RelayCommand(RotateCurrentCardRight, CanRotatCurrent);
+            MyCardGrid = new CardGrid();
 
 
-           
             _myCardDeck = new CardDeck();
 
             CurrentCard = _myCardDeck.DrawCard();
 
             CardBase card0 = _myCardDeck.DrawCard();
-            card0.Position = new BindPoint(100.0,100.0);
+            card0.Position = new BindPoint(100.0,100.0);            
+
+            CardBase card1 = _myCardDeck.DrawCard();
+            card1.Position = new BindPoint(100.0, 0.0);
             
+            CardBase card2 = _myCardDeck.DrawCard();
+            card2.Position = new BindPoint(200.0, 200.0);
 
-            //CardBase card1 = _myCardDeck.DrawCard();
-            //card1.GridPosRow = 100;
-            //card1.GridPosCol = 0;
-            //CardBase card2 = _myCardDeck.DrawCard();
-            //card2.GridPosRow = 200;
-            //card2.GridPosCol = 200;
-
+            IntPoint gridPos = (IntPoint) pos2GridConv.Convert(card0.Position, null, card0.Width, null);
 
             CardsOnBoard = new ObservableCollection<CardBase>() {};
             CardsOnBoard.CollectionChanged += CardsOnBoard_CollectionChanged;
 
             AddCardToBoard(card0);
-            //AddCardToBoard(card1);
-            //AddCardToBoard(card2);
+            AddCardToBoard(card1);
+            AddCardToBoard(card2);
+            MyCardGrid.FillGridPos(card0);
+            MyCardGrid.FillGridPos(card1);
+            MyCardGrid.FillGridPos(card2);
+
+            bool isOc = MyCardGrid.IsOccupied(1,1);
+            bool isOc2 = MyCardGrid.IsNeighbourOccupied(1, 0);
 
         }
         
@@ -125,15 +132,15 @@ namespace Carcassonne.ViewModel
         private void DrawNewCard()
         {            
             CurrentCard = _myCardDeck.DrawCard();
-            //CurrentCard.GridPosRow = 0;
-            //CurrentCard.GridPosCol = 0;
-            CurrentCard.GridPosition = new IntPoint(0, 0);
+            
             CurrentCard.RotationState = CardRotation.Deg0;
         }
 
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, e);
+            var handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void RotateCurrentCardLeft(object param)
@@ -148,6 +155,11 @@ namespace Carcassonne.ViewModel
         {
             return true;
         }
+
+
        
+
     }
+
+    
 }
