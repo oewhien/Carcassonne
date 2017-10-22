@@ -11,6 +11,7 @@ using Carcassonne.Classes.Helper;
 using System.Windows.Input;
 using System.Runtime.CompilerServices;
 using Carcassonne.Converter;
+using Carcassonne.Classes.Player;
 
 namespace Carcassonne.ViewModel
 {
@@ -18,11 +19,23 @@ namespace Carcassonne.ViewModel
 
     public class ViewModel : DependencyObject, INotifyPropertyChanged
     {
-        private const int numBoardPositionsRow = 100;
-        private const int numBoardPositionsCol = 120;
+        private const int _cardWidth = 100;
+        private const int _cardHeight = 100;
 
-        private int _centerRow = numBoardPositionsRow / 2;
-        private int _centerCol = numBoardPositionsCol / 2;
+        private const int _numBoardPositionsRow  = 100;
+        private const int _numBoardPositionsCol  = 120;
+
+        public int BoardWidth
+        {
+            get { return _numBoardPositionsCol * _cardWidth; }
+        }
+        public int BoardHeight
+        {
+            get { return _numBoardPositionsRow * _cardHeight;  }
+        }
+
+        public int CenterRow { get; } = _numBoardPositionsRow / 2;
+        public int CenterCol { get; } = _numBoardPositionsCol / 2;
 
         private bool[,] _occupiedBoardPositions;
 
@@ -33,8 +46,27 @@ namespace Carcassonne.ViewModel
         private CardPosition2CardGridConverter pos2GridConv = new CardPosition2CardGridConverter();
 
         private CardDeck _myCardDeck;
-        public CardGrid MyCardGrid;                    
-      
+        public CardGrid MyCardGrid;
+
+        private PlayerBase _playerHuman;
+        public PlayerBase PlayerHuman {
+            get { return _playerHuman; }
+            set {
+                _playerHuman = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private PlayerBase _playerPc;
+        public PlayerBase PlayerPc {
+            get { return _playerPc; }
+            set
+            {
+                _playerPc = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ObservableCollection<CardBase> CardsOnBoard { get;}
 
         private CardRotation _rotState;
@@ -88,14 +120,17 @@ namespace Carcassonne.ViewModel
             CardsOnBoard = new ObservableCollection<CardBase>() { };
             CardsOnBoard.CollectionChanged += CardsOnBoard_CollectionChanged;
 
-            IntializeGame();
+            CardBase.Width = _cardWidth;
+            CardBase.Height = _cardHeight;
 
+            IntializeGame();
+            
         }
         
         private void IntializeGame()
         {
             CardsOnBoard.Clear();
-            _occupiedBoardPositions = new bool[numBoardPositionsRow, numBoardPositionsRow];
+            _occupiedBoardPositions = new bool[_numBoardPositionsRow, _numBoardPositionsRow];
 
             MyCardGrid = new CardGrid();
             _myCardDeck = new CardDeck();
@@ -104,23 +139,51 @@ namespace Carcassonne.ViewModel
             CurrentCard = _myCardDeck.DrawCard();
 
             CardBase card0 = _myCardDeck.DrawCard();
-            card0.Position = new BindPoint(100.0, 100.0);
+            card0.Position = new BindPoint(_cardWidth * CenterCol, _cardHeight * CenterRow);
+          
 
-            CardBase card1 = _myCardDeck.DrawCard();
-            card1.Position = new BindPoint(100.0, 0.0);
-
-            CardBase card2 = _myCardDeck.DrawCard();
-            card2.Position = new BindPoint(200.0, 200.0);
-
-            IntPoint gridPos = (IntPoint)pos2GridConv.Convert(card0.Position, null, card0.Width, null);
-            
-
-            
+            IntPoint gridPos = (IntPoint)pos2GridConv.Convert(card0.Position, null, _cardWidth, null);         
 
             AddCardToBoard(card0);
-            AddCardToBoard(card1);
-            AddCardToBoard(card2);
+
+            PlayerHuman = new PlayerBase();
+            PlayerPc = new PlayerBase();
         }
+
+        public bool CanDropCard(IntPoint gridPos, CardBase card)
+        {
+            CardNeighbours neighbours = MyCardGrid.GetNeighbours(gridPos.Y, gridPos.X);
+            if (neighbours.NumNeighbours() == 0)
+                return false;
+
+            if (neighbours.North != null)
+                if (!CardEdgesEqual(neighbours.North.EdgeSouth, card.EdgeNorth))
+                    return false;
+            if (neighbours.East != null)
+                if (!CardEdgesEqual(neighbours.East.EdgeWest, card.EdgeEast))
+                    return false;
+            if (neighbours.West != null)
+                if (!CardEdgesEqual(neighbours.West.EdgeEast, card.EdgeWest))
+                    return false;
+            if (neighbours.South != null)
+                if (!CardEdgesEqual(neighbours.South.EdgeNorth, card.EdgeSouth))
+                    return false;
+
+            return true;
+        }
+
+        private bool CardEdgesEqual(CardEdge edge0, CardEdge edge1)
+        {
+            if (edge0.HasCity != edge1.HasCity)
+                return false;
+            if (edge0.HasStreet != edge1.HasStreet)
+                return false;
+            if (edge0.HasMeadow != edge1.HasMeadow)
+                return false;
+
+            return true;
+        }
+
 
 
         private void NewGameAction(object para)
@@ -143,9 +206,7 @@ namespace Carcassonne.ViewModel
 
         private void DrawNewCard()
         {            
-            CurrentCard = _myCardDeck.DrawCard();
-            
-            CurrentCard.RotationState = CardRotation.Deg0;
+            CurrentCard = _myCardDeck.DrawCard();                      
         }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)

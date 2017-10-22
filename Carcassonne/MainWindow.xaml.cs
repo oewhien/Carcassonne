@@ -19,6 +19,7 @@ using System.Threading;
 using System.Globalization;
 using System.Windows.Markup;
 using System.Resources;
+using Carcassonne.Classes.Meeples;
 
 namespace Carcassonne
 {
@@ -29,7 +30,13 @@ namespace Carcassonne
     {
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();           
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            MyScrollViewer.ScrollToHorizontalOffset(viewModel.BoardWidth / 2);
+            MyScrollViewer.ScrollToVerticalOffset(viewModel.BoardHeight / 2);
         }
 
         private void ItemsControl_Drop(object sender, DragEventArgs e)
@@ -39,26 +46,48 @@ namespace Carcassonne
                 //Panel _panel = sender as Panel;
                 //if (_panel == null)
                 //    return;
-                CardBase _card = e.Data.GetData("Object") as CardBase;
-                if (_card == null)
-                    return;
-                
                 Point mousePos = e.GetPosition(boardItemControl);
 
-                double x = Math.Round((mousePos.X - _card.Width/2)/_card.Width)*_card.Width;
-                double y = Math.Round((mousePos.Y - _card.Height/2)/_card.Height)*_card.Height;
-                CardPosition2CardGridConverter pos2GridConv = new CardPosition2CardGridConverter();
-                IntPoint gridPos = (IntPoint) pos2GridConv.Convert(new BindPoint(x, y), null, _card.Width, null);
+                CardBase card = e.Data.GetData("Object") as CardBase;
+                if (card != null)
+                    CardDrop(card, mousePos);
 
-                if (!viewModel.MyCardGrid.IsNeighbourOccupied(gridPos.Y, gridPos.X))
-                    return;
+                MeepleBase meeple = e.Data.GetData("Object") as MeepleBase;
+                if (meeple != null)
+                    MeepleDrop(meeple, mousePos);
 
-                _card.Position = new BindPoint(x, y);
 
-                viewModel.AddCardToBoard(_card);
+
                 // Todo: add effects etc.
             }
         }
+
+        private void CardDrop(CardBase card, Point mousePos)
+        {
+            double x = Math.Round((mousePos.X - CardBase.Width / 2) / CardBase.Width) * CardBase.Width;
+            double y = Math.Round((mousePos.Y - CardBase.Height / 2) / CardBase.Height) * CardBase.Height;
+            CardPosition2CardGridConverter pos2GridConv = new CardPosition2CardGridConverter();
+            IntPoint gridPos = (IntPoint)pos2GridConv.Convert(new BindPoint(x, y), null, CardBase.Width, null);
+
+            if (!viewModel.CanDropCard(gridPos, card))
+                return;
+
+            card.Position = new BindPoint(x, y);
+
+            viewModel.AddCardToBoard(card);
+        }
+
+        private void MeepleDrop(MeepleBase meeple, Point mousePos)
+        {
+            double x = Math.Round((mousePos.X - CardBase.Width / 2) / CardBase.Width) * CardBase.Width;
+            double y = Math.Round((mousePos.Y - CardBase.Height / 2) / CardBase.Height) * CardBase.Height;
+            CardPosition2CardGridConverter pos2GridConv = new CardPosition2CardGridConverter();
+            IntPoint gridPos = (IntPoint)pos2GridConv.Convert(new BindPoint(x, y), null, CardBase.Width, null);
+            Console.WriteLine("Hier weitermachen: meeple ins Grid platzieren usw.");
+
+        }
+
+
 
         private void Image_MouseMove(object sender, MouseEventArgs e)
         {
@@ -82,6 +111,17 @@ namespace Carcassonne
             if (result == MessageBoxResult.Yes)
                 viewModel.NewGame.Execute(null);
 
+        }
+
+        private void Image_MouseMoveMeeple(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DataObject data = new DataObject();
+                data.SetData("Object", viewModel.CurrentCard);
+
+                DragDrop.DoDragDrop(this, data, DragDropEffects.Copy | DragDropEffects.Move);
+            }
         }
     }
 }

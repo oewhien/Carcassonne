@@ -16,10 +16,10 @@ namespace Carcassonne.Classes
     {
         private CardRotation _rotationState;
 
-        public CardEdge _edgeNorth;
-        public CardEdge _edgeEast;
-        public CardEdge _edgeSouth;
-        public CardEdge _edgeWest;
+        public CardEdge EdgeNorth;
+        public CardEdge EdgeEast;
+        public CardEdge EdgeSouth;
+        public CardEdge EdgeWest;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -46,15 +46,15 @@ namespace Carcassonne.Classes
             CardBase card = sender as CardBase;
             if (card != null)
             {                
-                IntPoint intP = (IntPoint) card.Pos2GridConv.Convert(args.NewValue, null, card.Width, null);
+                IntPoint intP = (IntPoint) card.Pos2GridConv.Convert(args.NewValue, null, Width, null);
                 card.GridPosition = intP;
             }
         }
 
         public IntPoint GridPosition;
 
-        public int Height { get; } = 100;
-        public int Width { get; } = 100;
+        public static int Height { get; set; } = 100;
+        public static int Width { get; set; } = 100;
 
         private BitmapImage _cardImage;
 
@@ -103,33 +103,32 @@ namespace Carcassonne.Classes
             return (int)RotationState*90; 
         }
 
-        public class CardEdge
-        {
-            public bool HasStreet;
-            public bool HasCity;
-            public bool HasMeadow;
-        }
+        
 
         public void RotateCard(CardRotation cardRotation)
         {           
-            CardEdge[] currentCardEdges = new CardEdge[] { _edgeNorth, _edgeEast, _edgeSouth, _edgeWest };
+            CardEdge[] currentCardEdges = new CardEdge[] { EdgeNorth, EdgeEast, EdgeSouth, EdgeWest };
             CardEdge[] newCardEdges = new CardEdge[4];
 
             int currentRotation = (int)RotationState;
             int newRotation = (int)cardRotation;
 
-            int diffRotation = newRotation - currentRotation;
-            diffRotation = (diffRotation < 0) ? 4 - diffRotation : diffRotation;
+            //int diffRotation = newRotation - currentRotation;            
+            int diffRotation =  currentRotation - newRotation;
+            diffRotation = (diffRotation < 0) ? 4 + diffRotation : diffRotation;
 
+            //Console.WriteLine("Diffrot = {0}", diffRotation);
             for (int i = 0; i < 4; i++)
             {
+                
                 int currentIndex = (i + diffRotation)%4;
                 newCardEdges[i] = currentCardEdges[currentIndex];
+                //Console.WriteLine("{0} -> {1}", i, currentIndex);
             }
-            _edgeNorth = newCardEdges[0];
-            _edgeEast = newCardEdges[1];
-            _edgeSouth = newCardEdges[2];
-            _edgeWest = newCardEdges[3];
+            EdgeNorth = newCardEdges[0];
+            EdgeEast = newCardEdges[1];
+            EdgeSouth = newCardEdges[2];
+            EdgeWest = newCardEdges[3];
 
         }
 
@@ -159,6 +158,11 @@ namespace Carcassonne.Classes
         Deg270 = 3
     }
 
-    
+    public class CardEdge
+    {
+        public bool HasStreet;
+        public bool HasCity;
+        public bool HasMeadow;
+    }
 
 }

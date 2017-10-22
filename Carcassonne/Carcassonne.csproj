@@ -66,6 +66,9 @@
     <Compile Include="Classes\Helper\CardGrid.cs" />
     <Compile Include="Classes\Helper\IntPoint.cs" />
     <Compile Include="Classes\Helper\RelayCommand.cs" />
+    <Compile Include="Classes\Meeples\MeepleBase.cs" />
+    <Compile Include="Classes\Meeples\MeepleSimple.cs" />
+    <Compile Include="Classes\Player\PlayerBase.cs" />
     <Compile Include="Converter\CardPosition2CardGridConverter.cs" />
     <Compile Include="Converter\CardRotation2IntConverter.cs" />
     <Compile Include="Converter\CardRotation2ItemSourceConverter.cs" />

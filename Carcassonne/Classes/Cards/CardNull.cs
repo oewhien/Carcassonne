@@ -11,10 +11,10 @@ namespace Carcassonne.Classes
     {
         public CardNull()
         {
-            _edgeNorth = new CardEdge { HasCity = false, HasStreet = false, HasMeadow = false };
-            _edgeEast = new CardEdge { HasCity = false, HasStreet = false, HasMeadow = false };
-            _edgeSouth = new CardEdge { HasCity = false, HasStreet = false, HasMeadow = false };
-            _edgeWest = new CardEdge { HasCity = false, HasStreet = false, HasMeadow = false };
+            EdgeNorth = new CardEdge { HasCity = false, HasStreet = false, HasMeadow = false };
+            EdgeEast = new CardEdge { HasCity = false, HasStreet = false, HasMeadow = false };
+            EdgeSouth = new CardEdge { HasCity = false, HasStreet = false, HasMeadow = false };
+            EdgeWest = new CardEdge { HasCity = false, HasStreet = false, HasMeadow = false };
 
             CardImage = new BitmapImage();
 
