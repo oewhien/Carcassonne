@@ -7,8 +7,12 @@
         xmlns:vm="clr-namespace:Carcassonne.ViewModel"
         xmlns:conv="clr-namespace:Carcassonne.Converter"
         xmlns:cal="http://www.caliburnproject.org"
+        xmlns:resx="clr-namespace:Carcassonne.Resources"
         mc:Ignorable="d"
-        Title="{Binding WindowTitle}" Height="800" Width="1200">
+        WindowStartupLocation="Manual"
+        Left="2000"
+        Top="-100"
+        Title="{x:Static resx:LanguageResources.WindowTitle}" Height="800" Width="1200">
     <Window.DataContext>
         <vm:ViewModel x:Name="viewModel"/>
     </Window.DataContext>
@@ -72,15 +76,15 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Button Content="Links" Command="{Binding RotateCurrentCardLeftCommand}"></Button>
+            <Button Content="{x:Static resx:LanguageResources.ButtonRotateLeftLabel}" Command="{Binding RotateCurrentCardLeftCommand}"></Button>
             <Image Source="{Binding CurrentCard.CardImage}"
                    MouseMove="Image_MouseMove">
                 <Image.LayoutTransform>
                     <RotateTransform Angle="{Binding CurrentCard.RotationState, Converter={StaticResource cardRot2Int}}"/>
                 </Image.LayoutTransform>
             </Image>
-            <Button Content="Rechts" Command="{Binding RotateCurrentCardRightCommand}"></Button>
-            
+            <Button Content="{x:Static resx:LanguageResources.ButtonRotateRightLabel}" Command="{Binding RotateCurrentCardRightCommand}"></Button>
+            <Button Content="{x:Static resx:LanguageResources.ButtonNewGame}" Click="Button_ClickNewGame"></Button>
         </StackPanel>
 
     </Grid>

@@ -15,6 +15,10 @@ using System.Windows.Shapes;
 using Carcassonne.Classes;
 using Carcassonne.Converter;
 using Carcassonne.Classes.Helper;
+using System.Threading;
+using System.Globalization;
+using System.Windows.Markup;
+using System.Resources;
 
 namespace Carcassonne
 {
@@ -46,12 +50,10 @@ namespace Carcassonne
                 CardPosition2CardGridConverter pos2GridConv = new CardPosition2CardGridConverter();
                 IntPoint gridPos = (IntPoint) pos2GridConv.Convert(new BindPoint(x, y), null, _card.Width, null);
 
-
                 if (!viewModel.MyCardGrid.IsNeighbourOccupied(gridPos.Y, gridPos.X))
                     return;
 
-                _card.Position.X = x;
-                _card.Position.Y = y;
+                _card.Position = new BindPoint(x, y);
 
                 viewModel.AddCardToBoard(_card);
                 // Todo: add effects etc.
@@ -67,12 +69,19 @@ namespace Carcassonne
 
                 DragDrop.DoDragDrop(this, data, DragDropEffects.Copy | DragDropEffects.Move);
             }
-
             
         }
 
+        private void Button_ClickNewGame(object sender, RoutedEventArgs e)
+        {
+            string startNewCoreText = Carcassonne.Resources.LanguageResources.ResourceManager.GetString("MsgBoxNewGameText");
+            string startNewTitleText = Carcassonne.Resources.LanguageResources.ResourceManager.GetString("MsgBoxNewGameTitle");
+            // Message box gets language from OS :-(, Cannot change language of buttons.
 
+            MessageBoxResult result = MessageBox.Show(startNewCoreText, startNewTitleText, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+            if (result == MessageBoxResult.Yes)
+                viewModel.NewGame.Execute(null);
 
-
+        }
     }
 }

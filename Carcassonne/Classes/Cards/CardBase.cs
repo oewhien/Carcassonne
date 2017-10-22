@@ -33,7 +33,7 @@ namespace Carcassonne.Classes
 
         private static readonly PropertyMetadata posMeta = new PropertyMetadata()
         {
-            PropertyChangedCallback = OnPosChanged
+            PropertyChangedCallback = OnPosChanged,            
         };
 
         // Using a DependencyProperty as the backing store for Position.  This enables animation, styling, binding, etc...

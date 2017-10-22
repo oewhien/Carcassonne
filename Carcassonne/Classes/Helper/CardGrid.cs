@@ -17,7 +17,7 @@ namespace Carcassonne.Classes.Helper
 
         public void FillGridPos(int row, int col)
         {
-            GridPos.Add(new IntPoint(row, col));
+            GridPos.Add(new IntPoint(col, row));    // Remember: point(x,y)!
         }
 
         public void FillGridPos(CardBase card)
@@ -34,7 +34,6 @@ namespace Carcassonne.Classes.Helper
                 if ((pos.X - col) == 0 && (pos.Y - row) == 0)
                     return true;                        
             }
-
             return false;
         }
 
@@ -44,11 +43,9 @@ namespace Carcassonne.Classes.Helper
             {
                 int dRow = Math.Abs(pos.Y - row);
                 int dCol = Math.Abs(pos.X - col);
-                if (dRow <= 1 && dCol <= 1)
-                    return true;
-                
+                if ((dRow == 1 && dCol == 0) || (dRow == 0 && dCol == 1))
+                    return true;                
             }
-
             return false;
         }
     }
