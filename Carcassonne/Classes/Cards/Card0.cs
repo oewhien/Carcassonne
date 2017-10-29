@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace Carcassonne.Classes
+namespace Carcassonne.Classes.Cards
 {
     public class Card0 : CardBase
     {

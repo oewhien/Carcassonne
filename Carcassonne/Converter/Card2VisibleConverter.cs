@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Carcassonne.Classes;
+using Carcassonne.Classes.Cards;
 
 namespace Carcassonne.Converter
 {

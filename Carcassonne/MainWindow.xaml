@@ -53,16 +53,20 @@
                     <Style TargetType="ContentPresenter">
                         <Setter Property="Canvas.Left" Value="{Binding Position.X}"/>
                         <Setter Property="Canvas.Top" Value="{Binding Position.Y}"/>
-                        <Setter Property="AllowDrop" Value="False"/>
+                        <!-- <Setter Property="AllowDrop" Value="False"/> -->
                     </Style>
                 </ItemsControl.ItemContainerStyle>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Image Width="{Binding Width}" Height="{Binding Height}" Source="{Binding CardImage}">
-                            <Image.LayoutTransform>
-                                <RotateTransform Angle="{Binding RotationState, Converter={StaticResource cardRot2Int}}"></RotateTransform>
-                            </Image.LayoutTransform>
-                        </Image>
+                        <Grid>
+                            <Image Width="{Binding Width}" Height="{Binding Height}" Source="{Binding CardImage}">
+                                <Image.LayoutTransform>
+                                    <RotateTransform Angle="{Binding RotationState, Converter={StaticResource cardRot2Int}}"></RotateTransform>
+                                </Image.LayoutTransform>
+                            </Image>
+                            <Image Width="{Binding Width}" Height="{Binding Height}" Source="{Binding Meeple.MeepleImage}">
+                            </Image>
+                        </Grid>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

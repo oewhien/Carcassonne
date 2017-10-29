@@ -9,8 +9,10 @@ using System.Windows;
 using System.ComponentModel;
 using Carcassonne.Classes.Helper;
 using Carcassonne.Converter;
+using Carcassonne.Classes.Meeples;
+using System.Runtime.CompilerServices;
 
-namespace Carcassonne.Classes
+namespace Carcassonne.Classes.Cards
 {
     public class CardBase : DependencyObject, INotifyPropertyChanged
     {
@@ -62,13 +64,17 @@ namespace Carcassonne.Classes
             get { return _cardImage; }
             set {
                 _cardImage = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("CardImage"));
+                OnPropertyChanged();
             }
         }
 
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, e);
+            var handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            
         }
 
         public CardRotation RotationState
@@ -82,12 +88,29 @@ namespace Carcassonne.Classes
             {
                 RotateCard(value); //Important to do this before setting the new value!
                 _rotationState = value;
-                OnPropertyChanged(new PropertyChangedEventArgs("RotationState"));
+                OnPropertyChanged();
                 
             }
         }
 
-      
+        public MeepleBase Meeple
+        {
+            get
+            {
+                return _meeple;
+            }
+
+            set
+            {
+                _meeple = value;
+                OnPropertyChanged();                
+            }
+        }
+
+        private MeepleBase _meeple;
+
+
+
 
         public CardBase()
         {

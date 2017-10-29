@@ -9,6 +9,7 @@ using Carcassonne.Classes;
 using System.Reflection;
 using System.ComponentModel;
 using System.Windows;
+using Carcassonne.Classes.Cards;
 
 namespace Carcassonne.Converter
 {

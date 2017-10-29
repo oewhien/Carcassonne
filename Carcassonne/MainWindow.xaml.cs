@@ -20,6 +20,7 @@ using System.Globalization;
 using System.Windows.Markup;
 using System.Resources;
 using Carcassonne.Classes.Meeples;
+using Carcassonne.Classes.Cards;
 
 namespace Carcassonne
 {
@@ -83,7 +84,11 @@ namespace Carcassonne
             double y = Math.Round((mousePos.Y - CardBase.Height / 2) / CardBase.Height) * CardBase.Height;
             CardPosition2CardGridConverter pos2GridConv = new CardPosition2CardGridConverter();
             IntPoint gridPos = (IntPoint)pos2GridConv.Convert(new BindPoint(x, y), null, CardBase.Width, null);
-            Console.WriteLine("Hier weitermachen: meeple ins Grid platzieren usw.");
+
+            CardBase card = viewModel.MyCardGrid.GetCardAt(gridPos.Y, gridPos.X);
+            card.Meeple = meeple;
+            viewModel.PlayerHuman.MeepleStack.Remove(meeple);
+            viewModel.PlayerHuman.MeeplesOnBoard.Add(meeple);            
 
         }
 
@@ -117,8 +122,13 @@ namespace Carcassonne
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
+                if (viewModel.PlayerHuman.MeepleStack.Count == 0)
+                    return;
+
                 DataObject data = new DataObject();
-                data.SetData("Object", viewModel.CurrentCard);
+                data.SetData("Object", viewModel.PlayerHuman.MeepleStack[0]);
+
+                
 
                 DragDrop.DoDragDrop(this, data, DragDropEffects.Copy | DragDropEffects.Move);
             }

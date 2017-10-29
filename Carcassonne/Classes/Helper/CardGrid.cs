@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Carcassonne.Classes.Cards;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,22 @@ namespace Carcassonne.Classes.Helper
         {
             GridPos.Add(new IntPoint(col, row));    // Remember: point(x,y)!
             _cardPos.Add(card);
+        }
+
+        public CardBase GetCardAt(int row, int col)
+        {
+            int index = -1;            
+            for (int i = 0; i < GridPos.Count; i++)
+            {
+                IntPoint pos = GridPos[i];
+                if ((pos.X - col) == 0 && (pos.Y - row) == 0)
+                    index = i;
+            }
+
+            if (index == -1)
+                throw new Exception("There is no card here.");
+
+            return _cardPos[index];
         }
 
         public void FillGridPos(CardBase card)
@@ -64,6 +81,8 @@ namespace Carcassonne.Classes.Helper
             return neighbours;
         }
 
+        
+
 
         //public bool IsNeighbourOccupied(int row, int col)
         //{
@@ -84,6 +103,7 @@ namespace Carcassonne.Classes.Helper
         public CardBase East { get; set; }
         public CardBase South { get; set; }
         public CardBase West { get; set; }
+        
 
         public CardNeighbours()
         {

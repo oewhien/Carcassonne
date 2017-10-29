@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Runtime.CompilerServices;
 using Carcassonne.Converter;
 using Carcassonne.Classes.Player;
+using Carcassonne.Classes.Cards;
 
 namespace Carcassonne.ViewModel
 {
@@ -152,6 +153,9 @@ namespace Carcassonne.ViewModel
 
         public bool CanDropCard(IntPoint gridPos, CardBase card)
         {
+            if (MyCardGrid.IsOccupied(gridPos.Y, gridPos.X))
+                return false;
+
             CardNeighbours neighbours = MyCardGrid.GetNeighbours(gridPos.Y, gridPos.X);
             if (neighbours.NumNeighbours() == 0)
                 return false;
