@@ -36,8 +36,9 @@ namespace Carcassonne
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            MyScrollViewer.ScrollToHorizontalOffset(viewModel.BoardWidth / 2);
-            MyScrollViewer.ScrollToVerticalOffset(viewModel.BoardHeight / 2);
+           
+            MyScrollViewer.ScrollToHorizontalOffset(viewModel.BoardWidth / 2 - this.Width/2);
+            MyScrollViewer.ScrollToVerticalOffset(viewModel.BoardHeight / 2 - this.Height/2);
         }
 
         private void ItemsControl_Drop(object sender, DragEventArgs e)
@@ -56,8 +57,6 @@ namespace Carcassonne
                 MeepleBase meeple = e.Data.GetData("Object") as MeepleBase;
                 if (meeple != null)
                     MeepleDrop(meeple, mousePos);
-
-
 
                 // Todo: add effects etc.
             }
@@ -86,10 +85,12 @@ namespace Carcassonne
             IntPoint gridPos = (IntPoint)pos2GridConv.Convert(new BindPoint(x, y), null, CardBase.Width, null);
 
             CardBase card = viewModel.MyCardGrid.GetCardAt(gridPos.Y, gridPos.X);
-            card.Meeple = meeple;
-            viewModel.PlayerHuman.MeepleStack.Remove(meeple);
-            viewModel.PlayerHuman.MeeplesOnBoard.Add(meeple);            
+            if (card != viewModel.MyCardGrid.GetLastCard())
+                return;
+                // The meeple can only be dropped at the most recently card that was added to the board.
 
+            card.Meeple = meeple;
+            viewModel.CurrentPlayer.MeepleFromStackToBoard(meeple);                   
         }
 
 
@@ -122,11 +123,11 @@ namespace Carcassonne
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                if (viewModel.PlayerHuman.MeepleStack.Count == 0)
+                if (viewModel.CurrentPlayer.MeepleStack.Count == 0)
                     return;
 
                 DataObject data = new DataObject();
-                data.SetData("Object", viewModel.PlayerHuman.MeepleStack[0]);
+                data.SetData("Object", viewModel.CurrentPlayer.MeepleStack[0]);
 
                 
 

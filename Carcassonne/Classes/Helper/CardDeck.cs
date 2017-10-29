@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Security.Cryptography;
 using Carcassonne.Classes.Cards;
 
-namespace Carcassonne.Classes
+namespace Carcassonne.Classes.Helper
 {
     public class CardDeck
     {

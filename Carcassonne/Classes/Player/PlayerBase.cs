@@ -22,8 +22,20 @@ namespace Carcassonne.Classes.Player
             MeepleStack = new ObservableCollection<MeepleBase>();
             MeeplesOnBoard = new ObservableCollection<MeepleBase>();
 
-            MeepleStack.Add(new MeepleSimple());
+            MeepleStack.Add(new MeepleSimple(this));
         }
 
+
+        public void MeepleFromStackToBoard(MeepleBase meeple)
+        {
+            MeepleStack.Remove(meeple);
+            MeeplesOnBoard.Add(meeple);
+        }
+
+        public void MeepleFromBoardToStack(MeepleBase meeple)
+        {
+            MeeplesOnBoard.Remove(meeple);            
+            MeepleStack.Add(meeple);
+        }
     }
 }

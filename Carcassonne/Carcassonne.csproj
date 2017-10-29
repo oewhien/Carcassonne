@@ -57,7 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Classes\CardDeck.cs" />
+    <Compile Include="Classes\Helper\CardDeck.cs" />
     <Compile Include="Classes\Cards\Card1.cs" />
     <Compile Include="Classes\Cards\Card2.cs" />
     <Compile Include="Classes\Cards\Card3.cs" />
@@ -69,6 +69,9 @@
     <Compile Include="Classes\Meeples\MeepleBase.cs" />
     <Compile Include="Classes\Meeples\MeepleSimple.cs" />
     <Compile Include="Classes\Player\PlayerBase.cs" />
+    <Compile Include="Classes\Player\PlayerOtherHuman.cs" />
+    <Compile Include="Classes\Player\PlayerPc.cs" />
+    <Compile Include="Classes\Player\PlayerThisHuman.cs" />
     <Compile Include="Converter\CardPosition2CardGridConverter.cs" />
     <Compile Include="Converter\CardRotation2IntConverter.cs" />
     <Compile Include="Converter\CardRotation2ItemSourceConverter.cs" />

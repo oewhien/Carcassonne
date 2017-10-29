@@ -40,6 +40,11 @@ namespace Carcassonne.Classes.Helper
             return _cardPos[index];
         }
 
+        public CardBase GetLastCard()
+        {
+            return _cardPos[_cardPos.Count - 1];
+        }
+
         public void FillGridPos(CardBase card)
         {
             int row = card.GridPosition.Y;

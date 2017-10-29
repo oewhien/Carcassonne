@@ -49,24 +49,19 @@ namespace Carcassonne.ViewModel
         private CardDeck _myCardDeck;
         public CardGrid MyCardGrid;
 
-        private PlayerBase _playerHuman;
-        public PlayerBase PlayerHuman {
-            get { return _playerHuman; }
+        public ObservableCollection<PlayerBase> Players;
+
+
+        private PlayerBase _currentPlayer;
+        public PlayerBase CurrentPlayer {
+            get { return _currentPlayer; }
             set {
-                _playerHuman = value;
+                _currentPlayer = value;
                 OnPropertyChanged();
             }
         }
 
-        private PlayerBase _playerPc;
-        public PlayerBase PlayerPc {
-            get { return _playerPc; }
-            set
-            {
-                _playerPc = value;
-                OnPropertyChanged();
-            }
-        }
+        
 
         public ObservableCollection<CardBase> CardsOnBoard { get;}
 
@@ -124,8 +119,7 @@ namespace Carcassonne.ViewModel
             CardBase.Width = _cardWidth;
             CardBase.Height = _cardHeight;
 
-            IntializeGame();
-            
+            IntializeGame();            
         }
         
         private void IntializeGame()
@@ -147,8 +141,16 @@ namespace Carcassonne.ViewModel
 
             AddCardToBoard(card0);
 
-            PlayerHuman = new PlayerBase();
-            PlayerPc = new PlayerBase();
+
+
+            Players = new ObservableCollection<PlayerBase> {
+                new PlayerThisHuman(),
+                new PlayerPc(),
+                new PlayerOtherHuman()
+            };
+
+            CurrentPlayer = Players[0];
+
         }
 
         public bool CanDropCard(IntPoint gridPos, CardBase card)

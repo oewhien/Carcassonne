@@ -22,7 +22,7 @@
         <conv:Rotation2StringConverter x:Key="rotationConverter"/>
         <conv:CardRotation2IntConverter x:Key="cardRot2Int"/>
     </Window.Resources>
-    <Grid>
+    <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="29*"/>
             <RowDefinition Height="497*"/>
@@ -74,14 +74,6 @@
 
 
         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" >
-            <ListBox ItemsSource="{Binding RotationItems, Mode=TwoWay}" SelectedItem="{Binding CurrentCard.RotationState, Mode=TwoWay}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <!-- <TextBlock Text="{Binding  Converter={StaticResource rotationConverter}}"/> -->
-                        <TextBlock Text="{Binding }"/>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
             <Button Content="{x:Static resx:LanguageResources.ButtonRotateLeftLabel}" Command="{Binding RotateCurrentCardLeftCommand}"></Button>
             <Image Source="{Binding CurrentCard.CardImage}"
                    MouseMove="Image_MouseMove">
@@ -91,7 +83,7 @@
             </Image>
             <Button Content="{x:Static resx:LanguageResources.ButtonRotateRightLabel}" Command="{Binding RotateCurrentCardRightCommand}"></Button>
             <Button Content="{x:Static resx:LanguageResources.ButtonNewGame}" Click="Button_ClickNewGame"></Button>
-            <Image Source="{Binding PlayerHuman.MeepleStack[0].MeepleImage}" Width="100" Height="100" MouseMove="Image_MouseMoveMeeple"/>
+            <Image Source="{Binding CurrentPlayer.MeepleStack[0].MeepleImage}" Width="100" Height="100" MouseMove="Image_MouseMoveMeeple"/>
         </StackPanel>
 
     </Grid>

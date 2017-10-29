@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Carcassonne.Classes.Player;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -14,11 +15,12 @@ namespace Carcassonne.Classes.Meeples
         public event PropertyChangedEventHandler PropertyChanged;
 
         public BitmapImage MeepleImage { get; }
-        
+        public PlayerBase Owner { get; }
 
-        public MeepleBase()
+        public MeepleBase(PlayerBase owner)
         {
             MeepleImage = new BitmapImage();
+            Owner = owner;
         }
 
     }
