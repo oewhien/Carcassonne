@@ -51,7 +51,6 @@ namespace Carcassonne.ViewModel
 
         public ObservableCollection<PlayerBase> Players;
 
-
         private PlayerBase _currentPlayer;
         public PlayerBase CurrentPlayer {
             get { return _currentPlayer; }
@@ -100,7 +99,16 @@ namespace Carcassonne.ViewModel
         public void AddCardToBoard(CardBase card)
         {
             CardsOnBoard.Add(card);
-            MyCardGrid.FillGridPos(card);            
+            MyCardGrid.FillGridPos(card);
+
+            CardNeighbours neighbours = MyCardGrid.GetNeighbours(card); //ToDo: diese Methode (GetNeighbours-Overlaod) testen.           
+            SetConnectivity(card, neighbours);                        
+                        
+        }
+
+        private void SetConnectivity(CardBase card, CardNeighbours neighbours)
+        {
+            // ToDo> implementieren mit Connected - Klassen
         }
 
 

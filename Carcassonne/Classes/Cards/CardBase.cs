@@ -256,19 +256,18 @@ namespace Carcassonne.Classes.Cards
             int currentRotation = (int)RotationState;
             int newRotation = (int)cardRotation;
 
-            //int diffRotation = newRotation - currentRotation;            
-            int diffRotation =  currentRotation - newRotation;
+            int diffRotation = newRotation - currentRotation;                        
             diffRotation = (diffRotation < 0) ? 4 + diffRotation : diffRotation;
             
             if (diffRotation == 0)
                 return;
 
-            Console.WriteLine("Diffrot = {0}", diffRotation);
+            //Console.WriteLine("Diffrot = {0}", diffRotation);
             for (int i = 0; i < 4; i++)
             {                
-                int currentIndex = (i + diffRotation)%4;
-                newCardEdges[i] = currentCardEdges[currentIndex];
-                Console.WriteLine("{0} -> {1}", i, currentIndex);                
+                int currentIndex = (i + diffRotation)%4;                
+                newCardEdges[currentIndex] = currentCardEdges[i];
+                //Console.WriteLine("{0} -> {1}", i, currentIndex);                
             }
             EdgeNorth = newCardEdges[0];
             EdgeEast = newCardEdges[1];
@@ -276,15 +275,14 @@ namespace Carcassonne.Classes.Cards
             EdgeWest = newCardEdges[3];
 
             RotateMask(diffRotation);
-
         }
 
         private void RotateMask(int diffRotation)
         {
             for (int i=0; i < diffRotation; i++)
             {
-                MyCardMask.Meadows = RotateArray90DegClckw(MyCardMask.Meadows);
-                // MyCardMask.Monastery = RotateArray90DegClckw(MyCardMask.Monastery);  //Monastery is always in the center and thus needs no rotation.
+                //Monastery is always in the center and thus needs no rotation.
+                MyCardMask.Meadows = RotateArray90DegClckw(MyCardMask.Meadows);                
                 MyCardMask.Streets = RotateArray90DegClckw(MyCardMask.Streets);
                 MyCardMask.Cities = RotateArray90DegClckw(MyCardMask.Cities);
                 MyCardMask.Grain = RotateArray90DegClckw(MyCardMask.Grain);
@@ -292,6 +290,22 @@ namespace Carcassonne.Classes.Cards
                 MyCardMask.Barrel = RotateArray90DegClckw(MyCardMask.Barrel);
                 MyCardMask.Shield = RotateArray90DegClckw(MyCardMask.Shield);
             }
+
+            //Console.WriteLine("Meadow:");
+            //for (int i=0; i<3; i++)
+            //{
+            //    Console.WriteLine("{0}\t{1}\t{2}", MyCardMask.Meadows[i, 0], MyCardMask.Meadows[i, 1], MyCardMask.Meadows[i, 2]);
+            //}
+            //Console.WriteLine("Streets:");
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    Console.WriteLine("{0}\t{1}\t{2}", MyCardMask.Streets[i, 0], MyCardMask.Streets[i, 1], MyCardMask.Streets[i, 2]);
+            //}
+            //Console.WriteLine("City:");
+            //for (int i = 0; i < 3; i++)
+            //{
+            //    Console.WriteLine("{0}\t{1}\t{2}", MyCardMask.Cities[i, 0], MyCardMask.Cities[i, 1], MyCardMask.Cities[i, 2]);
+            //}
         }
 
         private int[,] RotateArray90DegClckw(int[,] inArray)

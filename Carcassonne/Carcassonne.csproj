@@ -57,6 +57,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Classes\Connected\ConnectedStreets.cs" />
     <Compile Include="Classes\Helper\CardDeck.cs" />
     <Compile Include="Classes\Cards\Card1.cs" />
     <Compile Include="Classes\Cards\Card2.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Classes\Cards\CardNull.cs" />
     <Compile Include="Classes\Helper\BindPoint.cs" />
     <Compile Include="Classes\Helper\CardGrid.cs" />
+    <Compile Include="Classes\Connected\ConnectedBase.cs" />
     <Compile Include="Classes\Helper\IntPoint.cs" />
     <Compile Include="Classes\Helper\RelayCommand.cs" />
     <Compile Include="Classes\Meeples\MeepleBase.cs" />

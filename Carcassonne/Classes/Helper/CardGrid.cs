@@ -1,4 +1,5 @@
 ﻿using Carcassonne.Classes.Cards;
+using Carcassonne.Converter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -61,6 +62,19 @@ namespace Carcassonne.Classes.Helper
                     return true;                        
             }
             return false;
+        }
+
+        public CardNeighbours GetNeighbours(CardBase card)
+        {
+            CardNeighbours neighbours = new CardNeighbours();
+
+            BindPoint p = card.Position;
+            CardPosition2CardGridConverter conv = card.Pos2GridConv;
+            IntPoint gridPos = conv.Convert(p, null, null, null) as IntPoint;
+            if (gridPos != null)
+                neighbours = GetNeighbours(gridPos.Y, gridPos.X);
+            
+            return neighbours;
         }
 
         public CardNeighbours GetNeighbours(int row, int col)
