@@ -18,7 +18,7 @@ namespace Carcassonne.Classes.Cards
 
 
             SetImage(@"D:\User_Data\Documents\Visual Studio 2015\Projects\Carcassonne\Images\Card0.jpg");
-            //SetMask(@"D:\User_Data\Documents\Visual Studio 2015\Projects\Carcassonne\Images\Card0Mask.txt");
+            SetMask(@"D:\User_Data\Documents\Visual Studio 2015\Projects\Carcassonne\Images\Card0Mask.txt");
         }
 
 

@@ -23,6 +23,8 @@ namespace Carcassonne.Classes.Cards
         public CardEdge EdgeEast;
         public CardEdge EdgeSouth;
         public CardEdge EdgeWest;
+        public CardMasks MyCardMask;
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -77,23 +79,116 @@ namespace Carcassonne.Classes.Cards
             CardImage.EndInit();
         }
 
-        //protected void SetMask(string path)
-        //{
-        //    CardMasks mask = new CardMasks();
+        protected void SetMask(string path)
+        {
+            CardMasks mask = new CardMasks();
 
-        //    string[] lines = System.IO.File.ReadAllLines(path);
-        //    for (int i = 0; i < lines.Length; i++)            
-        //    {
-        //        string line = lines[i];
-        //        if (line.Contains("Meadows"))
-        //        {
-                    
-        //        }
-        //    }
+            string[] lines = System.IO.File.ReadAllLines(path);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string line = lines[i];
+                if (line.Contains("Meadows"))
+                {
+                    mask.Meadows = GetMaskArray(lines, i + 1);
+                    i = i + 4;                    
+                    continue;
+                }
+                if (line.Contains("Monastery"))
+                {
+                    mask.Monastery = GetMaskArray(lines, i + 1);
+                    i = i + 4;                    
+                    continue;
+                }
+                if (line.Contains("Streets"))
+                {
+                    mask.Streets = GetMaskArray(lines, i + 1);
+                    i = i + 4;
+                    continue;
+                }
+                if (line.Contains("Cities"))
+                {
+                    mask.Cities = GetMaskArray(lines, i + 1);
+                    i = i + 4;
+                    continue;
+                }
+                if (line.Contains("Grain"))
+                {
+                    mask.Grain = GetMaskArray(lines, i + 1);
+                    i = i + 4;
+                    continue;
+                }
+                if (line.Contains("Fabric"))
+                {
+                    mask.Fabric = GetMaskArray(lines, i + 1);
+                    i = i + 4;
+                    continue;
+                }
+                if (line.Contains("Barrel"))
+                {
+                    mask.Barrel = GetMaskArray(lines, i + 1);
+                    i = i + 4;
+                    continue;
+                }
+                if (line.Contains("Shield"))
+                {
+                    mask.Shield = GetMaskArray(lines, i + 1);
+                    i = i + 4;
+                    continue;
+                }
+            }
+            MyCardMask = mask;
+            SetEdges(mask);
+        }
 
-        //}
+        private void SetEdges(CardMasks mask)
+        {
+            if (mask.Meadows[0, 1] != 0)
+                EdgeNorth.HasMeadow = true;
+            if (mask.Cities[0, 1] != 0)
+                EdgeNorth.HasCity = true;
+            if (mask.Streets[0, 1] != 0)
+                EdgeNorth.HasStreet = true;
+
+            if (mask.Meadows[1, 0] != 0)
+                EdgeWest.HasMeadow = true;
+            if (mask.Cities[1, 0] != 0)
+                EdgeWest.HasCity = true;
+            if (mask.Streets[1, 0] != 0)
+                EdgeWest.HasStreet = true;
+
+            if (mask.Meadows[1, 2] != 0)
+                EdgeEast.HasMeadow = true;
+            if (mask.Cities[1, 2] != 0)
+                EdgeEast.HasCity = true;
+            if (mask.Streets[1, 2] != 0)
+                EdgeEast.HasStreet = true;
+
+            if (mask.Meadows[2, 1] != 0)
+                EdgeSouth.HasMeadow = true;
+            if (mask.Cities[2, 1] != 0)
+                EdgeSouth.HasCity = true;
+            if (mask.Streets[2, 1] != 0)
+                EdgeSouth.HasStreet = true;
+        }
 
 
+        private int[,] GetMaskArray(string[] lines, int startInd)
+        {
+            int[,] maskArray = new int[3, 3];
+
+            for (int i = 0; i < 3; i++)
+            {
+                int lineInd = startInd + i;
+                string line = lines[lineInd];
+                string[] chars = line.Split('\t');
+
+                Int32.TryParse(chars[0], out maskArray[i, 0]);
+                Int32.TryParse(chars[1], out maskArray[i, 1]);
+                Int32.TryParse(chars[2], out maskArray[i, 2]);
+            }
+
+            return maskArray;
+        }
 
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -164,19 +259,51 @@ namespace Carcassonne.Classes.Cards
             //int diffRotation = newRotation - currentRotation;            
             int diffRotation =  currentRotation - newRotation;
             diffRotation = (diffRotation < 0) ? 4 + diffRotation : diffRotation;
+            
+            if (diffRotation == 0)
+                return;
 
-            //Console.WriteLine("Diffrot = {0}", diffRotation);
+            Console.WriteLine("Diffrot = {0}", diffRotation);
             for (int i = 0; i < 4; i++)
             {                
                 int currentIndex = (i + diffRotation)%4;
                 newCardEdges[i] = currentCardEdges[currentIndex];
-                //Console.WriteLine("{0} -> {1}", i, currentIndex);
+                Console.WriteLine("{0} -> {1}", i, currentIndex);                
             }
             EdgeNorth = newCardEdges[0];
             EdgeEast = newCardEdges[1];
             EdgeSouth = newCardEdges[2];
             EdgeWest = newCardEdges[3];
 
+            RotateMask(diffRotation);
+
+        }
+
+        private void RotateMask(int diffRotation)
+        {
+            for (int i=0; i < diffRotation; i++)
+            {
+                MyCardMask.Meadows = RotateArray90DegClckw(MyCardMask.Meadows);
+                // MyCardMask.Monastery = RotateArray90DegClckw(MyCardMask.Monastery);  //Monastery is always in the center and thus needs no rotation.
+                MyCardMask.Streets = RotateArray90DegClckw(MyCardMask.Streets);
+                MyCardMask.Cities = RotateArray90DegClckw(MyCardMask.Cities);
+                MyCardMask.Grain = RotateArray90DegClckw(MyCardMask.Grain);
+                MyCardMask.Fabric = RotateArray90DegClckw(MyCardMask.Fabric);
+                MyCardMask.Barrel = RotateArray90DegClckw(MyCardMask.Barrel);
+                MyCardMask.Shield = RotateArray90DegClckw(MyCardMask.Shield);
+            }
+        }
+
+        private int[,] RotateArray90DegClckw(int[,] inArray)
+        {
+            int[,] outArray = new int[3,3];
+            outArray[0, 1] = inArray[1, 0];
+            outArray[1, 2] = inArray[0, 1];
+            outArray[2, 1] = inArray[1, 2];
+            outArray[1, 0] = inArray[2, 1];
+            outArray[1, 1] = inArray[1, 1];
+
+            return outArray;
         }
 
         public void RotateCardLeft()
@@ -218,14 +345,14 @@ namespace Carcassonne.Classes.Cards
 
     public class CardMasks
     {
-        public int[] Meadows;
-        public int[] Monastery;
-        public int[] Streets;
-        public int[] Cities;
-        public int[] Grain;
-        public int[] Fabric;
-        public int[] Barrel;
-        public int[] Shield;
+        public int[,] Meadows;
+        public int[,] Monastery;
+        public int[,] Streets;
+        public int[,] Cities;
+        public int[,] Grain;
+        public int[,] Fabric;
+        public int[,] Barrel;
+        public int[,] Shield;
     }
 
 

@@ -1,7 +1,7 @@
 
 # Meadows
 x	1	x
-0	0	1
+1	1	1
 x	1	x
 
 # Monastery
@@ -10,13 +10,13 @@ x	0	x
 x	0	x
 
 # Streets
-x	1	x
-0	1	0
+x	0	x
+1	1	1
 x	0	x
 
 # Cities
 x	0	x
-1	0	0
+0	0	0
 x	0	x
 
 # Grain

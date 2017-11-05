@@ -16,7 +16,8 @@ namespace Carcassonne.Classes.Cards
             EdgeSouth = new CardEdge { HasCity = false, HasStreet = false, HasMeadow = true };
             EdgeWest = new CardEdge { HasCity = false, HasStreet = true, HasMeadow = true };
 
-            SetImage(@"D:\User_Data\Documents\Visual Studio 2015\Projects\Carcassonne\Images\Card2.jpg"); 
+            SetImage(@"D:\User_Data\Documents\Visual Studio 2015\Projects\Carcassonne\Images\Card2.jpg");
+            SetMask(@"D:\User_Data\Documents\Visual Studio 2015\Projects\Carcassonne\Images\Card2Mask.txt");
         }
 
 
