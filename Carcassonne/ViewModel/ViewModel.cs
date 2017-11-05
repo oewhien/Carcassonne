@@ -130,7 +130,7 @@ namespace Carcassonne.ViewModel
             MyCardGrid = new CardGrid();
             _myCardDeck = new CardDeck();
 
-
+            
             CurrentCard = _myCardDeck.DrawCard();
 
             CardBase card0 = _myCardDeck.DrawCard();
@@ -139,9 +139,7 @@ namespace Carcassonne.ViewModel
 
             IntPoint gridPos = (IntPoint)pos2GridConv.Convert(card0.Position, null, _cardWidth, null);         
 
-            AddCardToBoard(card0);
-
-
+            AddCardToBoard(card0);                    
 
             Players = new ObservableCollection<PlayerBase> {
                 new PlayerThisHuman(),

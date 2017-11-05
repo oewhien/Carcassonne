@@ -11,6 +11,7 @@ using Carcassonne.Classes.Helper;
 using Carcassonne.Converter;
 using Carcassonne.Classes.Meeples;
 using System.Runtime.CompilerServices;
+using System.IO;
 
 namespace Carcassonne.Classes.Cards
 {
@@ -62,11 +63,37 @@ namespace Carcassonne.Classes.Cards
 
         public BitmapImage CardImage {
             get { return _cardImage; }
-            set {
+            private set {
                 _cardImage = value;
                 OnPropertyChanged();
             }
         }
+
+        protected void SetImage(string path)
+        {
+            CardImage = new BitmapImage();
+            CardImage.BeginInit();
+            CardImage.UriSource = new Uri(path);
+            CardImage.EndInit();
+        }
+
+        //protected void SetMask(string path)
+        //{
+        //    CardMasks mask = new CardMasks();
+
+        //    string[] lines = System.IO.File.ReadAllLines(path);
+        //    for (int i = 0; i < lines.Length; i++)            
+        //    {
+        //        string line = lines[i];
+        //        if (line.Contains("Meadows"))
+        //        {
+                    
+        //        }
+        //    }
+
+        //}
+
+
 
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -88,8 +115,7 @@ namespace Carcassonne.Classes.Cards
             {
                 RotateCard(value); //Important to do this before setting the new value!
                 _rotationState = value;
-                OnPropertyChanged();
-                
+                OnPropertyChanged();                
             }
         }
 
@@ -117,8 +143,7 @@ namespace Carcassonne.Classes.Cards
             Pos2GridConv = new CardPosition2CardGridConverter();
             RotationState = CardRotation.Deg0;
             GridPosition = new IntPoint(-1, -1);
-            Position = new BindPoint();
-                 
+            Position = new BindPoint();                 
         }
 
         public int RotAngle()
@@ -142,8 +167,7 @@ namespace Carcassonne.Classes.Cards
 
             //Console.WriteLine("Diffrot = {0}", diffRotation);
             for (int i = 0; i < 4; i++)
-            {
-                
+            {                
                 int currentIndex = (i + diffRotation)%4;
                 newCardEdges[i] = currentCardEdges[currentIndex];
                 //Console.WriteLine("{0} -> {1}", i, currentIndex);
@@ -165,6 +189,10 @@ namespace Carcassonne.Classes.Cards
             RotationState = (CardRotation)(((int)RotationState + 1) % 4);
         }
 
+        public override string ToString()
+        {
+            return this.GetType().Name;
+        }
 
 
     }
@@ -187,5 +215,18 @@ namespace Carcassonne.Classes.Cards
         public bool HasCity;
         public bool HasMeadow;
     }
+
+    public class CardMasks
+    {
+        public int[] Meadows;
+        public int[] Monastery;
+        public int[] Streets;
+        public int[] Cities;
+        public int[] Grain;
+        public int[] Fabric;
+        public int[] Barrel;
+        public int[] Shield;
+    }
+
 
 }

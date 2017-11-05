@@ -35,7 +35,8 @@ namespace Carcassonne.Classes.Helper
             }
 
             if (index == -1)
-                throw new Exception("There is no card here.");
+                //throw new Exception("There is no card here.");
+                return null;
 
             return _cardPos[index];
         }

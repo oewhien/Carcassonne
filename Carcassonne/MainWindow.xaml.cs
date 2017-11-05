@@ -85,6 +85,9 @@ namespace Carcassonne
             IntPoint gridPos = (IntPoint)pos2GridConv.Convert(new BindPoint(x, y), null, CardBase.Width, null);
 
             CardBase card = viewModel.MyCardGrid.GetCardAt(gridPos.Y, gridPos.X);
+            if (card == null)
+                return;
+
             if (card != viewModel.MyCardGrid.GetLastCard())
                 return;
                 // The meeple can only be dropped at the most recently card that was added to the board.

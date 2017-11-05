@@ -16,18 +16,10 @@ namespace Carcassonne.Classes.Cards
             EdgeSouth = new CardEdge { HasCity = true, HasStreet = false, HasMeadow = false };
             EdgeWest = new CardEdge { HasCity = true, HasStreet = false, HasMeadow = false };
 
-
-            CardImage = new BitmapImage();
-
-            CardImage.BeginInit();
-            CardImage.UriSource = new Uri(@"D:\User_Data\Documents\Visual Studio 2015\Projects\Carcassonne\Images\Card1.jpg");
-            CardImage.EndInit();
+            SetImage(@"D:\User_Data\Documents\Visual Studio 2015\Projects\Carcassonne\Images\Card1.jpg");
         }
 
-        public override string ToString()
-        {
-            return "Card1";
-        }
+
 
     }
 }
